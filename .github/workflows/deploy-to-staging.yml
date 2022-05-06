@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 0
     - name: Set up Python 3.7
@@ -41,18 +41,8 @@ jobs:
       run: |
         python scripts/build_data.py
     - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@3.7.1
+      uses: JamesIves/github-pages-deploy-action@v4.3.3
       with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BRANCH: gh-pages
-        FOLDER: _site
-        CLEAN: true
-    - name: Waiting 4 minutes for staging data deployment
-      run: |
-        sleep 240
-    - name: Rebuild site
-      run: |
-        curl -X POST https://api.github.com/repos/STAGING_ORGANISATION/STAGING_SITE_REPOSITORY/dispatches \
-        -H "Accept: application/vnd.github.everest-preview+json" \
-        -H "Authorization: token ${{secrets.token}}" \
-        --data '{"event_type": "rebuild-staging"}'
+        branch: gh-pages
+        folder: _site
+        clean: true
